@@ -239,11 +239,11 @@ typedef union{
 #define GPIOIM_PortE_R   ( (volatile GPIO_InterruptMask_Reg*)(PORTE_BASE+ 0x410) )
 #define GPIOIM_PortF_R   ( (volatile GPIO_InterruptMask_Reg*)(PORTF_BASE+ 0x410) )
 
-#define GPIO_PortA_Data  (*( (volatile GPIO_Data_Reg*) PORTA_BASE ) )
-#define GPIO_PortB_Data  (*( (volatile GPIO_Data_Reg*) PORTB_BASE ) )
-#define GPIO_PortC_Data  (*( (volatile GPIO_Data_Reg*) PORTC_BASE ) )
-#define GPIO_PortD_Data  (*( (volatile GPIO_Data_Reg*) PORTD_BASE ) )
-#define GPIO_PortE_Data  (*( (volatile GPIO_Data_Reg*) PORTE_BASE ) )
+#define GPIO_PortA_Data  (*( (volatile GPIO_Data_Reg*) PORTA_BASE + 0x3FC ) )
+#define GPIO_PortB_Data  (*( (volatile GPIO_Data_Reg*) PORTB_BASE + 0x3FC) )
+#define GPIO_PortC_Data  (*( (volatile GPIO_Data_Reg*) 0x400063FC) )
+#define GPIO_PortD_Data  (*( (volatile GPIO_Data_Reg*) 0x400073FC) )
+#define GPIO_PortE_Data  (*( (volatile GPIO_Data_Reg*) PORTE_BASE + 0x3FC) )
 #define GPIO_PortF_Data  (*( (volatile GPIO_Data_Reg*) 0x40025038 ) )
 
 //#define GPIO_PORTF_DATA_R (*(( volatile unsigned long *)0x40025038 ) )
