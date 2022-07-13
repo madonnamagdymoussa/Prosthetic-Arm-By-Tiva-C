@@ -739,8 +739,12 @@ void GPIO_ConfigureInterruptMask(GPIO_PortNumIndexArr_t PortNumIndexArr, GPIO_Co
 void GPIO_TimerPWMInitialization(GPIO_TimerPWMConfigChannel_t * TimerPWMConfigChannel){
 
     GPIO_EnableRunModeClockGateControl(TimerPWMConfigChannel->PortNumIndexArr);
+    GPIO_SetPinStatus(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, Output );
+    GPIO_SetData(TimerPWMConfigChannel->PortNumIndexArr , TimerPWMConfigChannel->ConfigureChannelNum, OutputHigh);
+
     GPIO_ConfigureAlternateFunctionSelect(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum , Enable_AFSEL);
     GPIO_ConfigurePortControl(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, MuxValue_7 );
+
 
     GPIO_ConfigureDigitalEnable(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, EnableDigitalFunction);
 
