@@ -1,0 +1,338 @@
+******************************************************************************
+                  TI ARM Linker PC v20.2.5                     
+******************************************************************************
+>> Linked Tue Jul 12 02:42:17 2022
+
+OUTPUT FILE NAME:   <ProstheticArm.out>
+ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00000ec1
+
+
+MEMORY CONFIGURATION
+
+         name            origin    length      used     unused   attr    fill
+----------------------  --------  ---------  --------  --------  ----  --------
+  FLASH                 00000000   00040000  000011d5  0003ee2b  R  X
+  SRAM                  20000000   00008000  00000248  00007db8  RW X
+
+
+SEGMENT ALLOCATION MAP
+
+run origin  load origin   length   init length attrs members
+----------  ----------- ---------- ----------- ----- -------
+00000000    00000000    000011d8   000011d8    r-x
+  00000000    00000000    0000026c   0000026c    r-- .intvecs
+  0000026c    0000026c    00000cb6   00000cb6    r-x .text
+  00000f24    00000f24    00000273   00000273    r-- .const
+  00001198    00001198    00000040   00000040    r-- .cinit
+20000000    20000000    00000248   00000000    rw-
+  20000000    20000000    00000200   00000000    rw- .stack
+  20000200    20000200    00000048   00000000    rw- .data
+
+
+SECTION ALLOCATION MAP
+
+ output                                  attributes/
+section   page    origin      length       input sections
+--------  ----  ----------  ----------   ----------------
+.intvecs   0    00000000    0000026c     
+                  00000000    0000026c     tm4c123gh6pm_startup_ccs.obj (.intvecs)
+
+.text      0    0000026c    00000cb6     
+                  0000026c    000005b8     GPIO.obj (.text)
+                  00000824    00000278     GPTM.obj (.text)
+                  00000a9c    000001a8     SystemControl.obj (.text)
+                  00000c44    0000009c     ServoMotor.obj (.text)
+                  00000ce0    0000009c     rtsv7M4_T_le_v4SPD16_eabi.lib : memcpy_t2.asm.obj (.text)
+                  00000d7c    00000096                                   : ull_div_t2.asm.obj (.text)
+                  00000e12    00000068                                   : copy_decompress_lzss.c.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  00000e7a    00000002                                   : div0.asm.obj (.text)
+                  00000e7c    00000044                                   : autoinit.c.obj (.text:__TI_auto_init_nobinit_nopinit:__TI_auto_init_nobinit_nopinit)
+                  00000ec0    00000034                                   : boot_cortex_m.c.obj (.text:_c_int00_noargs:_c_int00_noargs)
+                  00000ef4    0000000e                                   : copy_decompress_none.c.obj (.text:decompress:none:__TI_decompress_none)
+                  00000f02    0000000c     main.obj (.text)
+                  00000f0e    0000000c     tm4c123gh6pm_startup_ccs.obj (.text)
+                  00000f1a    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : pre_init.c.obj (.text:_system_pre_init)
+                  00000f1e    00000004                                   : exit.c.obj (.text:abort:abort)
+
+.const     0    00000f24    00000273     
+                  00000f24    00000060     GPTM.obj (.const:GPTM_TimerMode)
+                  00000f84    00000030     GPIO_config.obj (.const:GPIO_PWMConfigAFSEL_ArrPtrStruct)
+                  00000fb4    00000030     GPTM.obj (.const:GPTM_ConfigurationRegisters)
+                  00000fe4    00000030     GPTM.obj (.const:GPTM_Control)
+                  00001014    00000018     GPIO.obj (.const:GPIO_AlternateFunctionSelect_Registers)
+                  0000102c    00000018     GPIO.obj (.const:GPIO_AnalogModeSelect_Registers)
+                  00001044    00000018     GPIO.obj (.const:GPIO_Data_Registers)
+                  0000105c    00000018     GPIO.obj (.const:GPIO_DigitalEnable_Registers)
+                  00001074    00000018     GPIO.obj (.const:GPIO_Direction_Registers)
+                  0000108c    00000018     GPIO.obj (.const:GPIO_InterruptClear_Registers)
+                  000010a4    00000018     GPIO.obj (.const:GPIO_InterruptMask_Registers)
+                  000010bc    00000018     GPIO.obj (.const:GPIO_LOCK_Registers)
+                  000010d4    00000018     GPIO.obj (.const:GPIO_PortControl_Registers)
+                  000010ec    00000018     GPIO.obj (.const:GPIO_Port_Commit)
+                  00001104    00000018     GPTM.obj (.const:GPTM_32BitTimerB_IntervalLoad)
+                  0000111c    00000018     GPTM.obj (.const:GPTM_32BitTimerB_Match)
+                  00001134    00000018     GPTM.obj (.const:GPTM_32_64_BitTimerA_IntervalLoad)
+                  0000114c    00000018     GPTM.obj (.const:GPTM_32_64_BitTimerA_Match)
+                  00001164    0000000f     SystemControl.obj (.const:.string:SC_SYSDIV)
+                  00001173    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer0A)
+                  00001176    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer0B)
+                  00001179    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer1A)
+                  0000117c    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer1B)
+                  0000117f    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer2A)
+                  00001182    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer2B)
+                  00001185    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer3A)
+                  00001188    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer3B)
+                  0000118b    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer4A)
+                  0000118e    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer4B)
+                  00001191    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer5A)
+                  00001194    00000003     GPIO_config.obj (.const:PWM_32_64BitTimer5B)
+
+.cinit     0    00001198    00000040     
+                  00001198    00000030     (.cinit..data.load) [load image, compression = lzss]
+                  000011c8    00000008     (__TI_handler_table)
+                  000011d0    00000008     (__TI_cinit_table)
+
+.init_array 
+*          0    00000000    00000000     UNINITIALIZED
+
+.data      0    20000200    00000048     UNINITIALIZED
+                  20000200    00000018     GPIO.obj (.data:EXTI_Callback)
+                  20000218    00000018     GPTM_config.obj (.data:GPTM_PWMConfig_ArrPtrStruct)
+                  20000230    00000004     GPTM_config.obj (.data:GPTM_PWMConfig_32BitTimer0A)
+                  20000234    00000004     GPTM_config.obj (.data:GPTM_PWMConfig_32BitTimer0B)
+                  20000238    00000004     GPTM_config.obj (.data:GPTM_PWMConfig_32BitTimer1A)
+                  2000023c    00000004     GPTM_config.obj (.data:GPTM_PWMConfig_32BitTimer1B)
+                  20000240    00000004     GPTM_config.obj (.data:GPTM_PWMConfig_32BitTimer2A)
+                  20000244    00000004     GPTM_config.obj (.data:GPTM_PWMConfig_32BitTimer2B)
+
+.stack     0    20000000    00000200     UNINITIALIZED
+                  20000000    00000004     rtsv7M4_T_le_v4SPD16_eabi.lib : boot_cortex_m.c.obj (.stack)
+                  20000004    000001fc     --HOLE--
+
+__llvm_prf_cnts 
+*          0    20000000    00000000     UNINITIALIZED
+
+MODULE SUMMARY
+
+       Module                         code   ro data   rw data
+       ------                         ----   -------   -------
+    .\
+       GPIO.obj                       1464   240       24     
+       GPTM.obj                       632    288       0      
+       tm4c123gh6pm_startup_ccs.obj   12     620       0      
+       SystemControl.obj              424    15        0      
+       ServoMotor.obj                 156    0         0      
+       GPIO_config.obj                0      84        0      
+       GPTM_config.obj                0      0         48     
+       main.obj                       12     0         0      
+    +--+------------------------------+------+---------+---------+
+       Total:                         2700   1247      72     
+                                                              
+    D:\code composer\ccs\tools\compiler\ti-cgt-arm_20.2.5.LTS\lib\rtsv7M4_T_le_v4SPD16_eabi.lib
+       memcpy_t2.asm.obj              156    0         0      
+       ull_div_t2.asm.obj             150    0         0      
+       copy_decompress_lzss.c.obj     104    0         0      
+       autoinit.c.obj                 68     0         0      
+       boot_cortex_m.c.obj            52     0         0      
+       copy_decompress_none.c.obj     14     0         0      
+       exit.c.obj                     4      0         0      
+       pre_init.c.obj                 4      0         0      
+       div0.asm.obj                   2      0         0      
+    +--+------------------------------+------+---------+---------+
+       Total:                         554    0         0      
+                                                              
+       Stack:                         0      0         512    
+       Linker Generated:              0      64        0      
+    +--+------------------------------+------+---------+---------+
+       Grand Total:                   3254   1311      584    
+
+
+LINKER GENERATED COPY TABLES
+
+__TI_cinit_table @ 000011d0 records: 1, size/record: 8, table size: 8
+	.data: load addr=00001198, load size=00000030 bytes, run addr=20000200, run size=00000048 bytes, compression=lzss
+
+
+LINKER GENERATED HANDLER TABLE
+
+__TI_handler_table @ 000011c8 records: 2, size/record: 4, table size: 8
+	index: 0, handler: __TI_decompress_lzss
+	index: 1, handler: __TI_decompress_none
+
+
+GLOBAL SYMBOLS: SORTED ALPHABETICALLY BY Name 
+
+address   name                                 
+-------   ----                                 
+00000f1f  C$$EXIT                              
+00000c87  CloseHand                            
+00000293  EXTIAIntHandler                      
+000002a3  EXTIBIntHandler                      
+000002b3  EXTICIntHandler                      
+000002c3  EXTIDIntHandler                      
+000002d3  EXTIEIntHandler                      
+000002e3  EXTIFIntHandler                      
+0000044d  GPIO_ConfigureAlternateFunctionSelect
+000004d9  GPIO_ConfigureAnalogModeSelect       
+0000065d  GPIO_ConfigureCommit                 
+000005cd  GPIO_ConfigureDigitalEnable          
+0000071b  GPIO_ConfigureInterruptMask          
+00000569  GPIO_ConfigurePortControl            
+000006d9  GPIO_EXTIClearInterrupt              
+00000f84  GPIO_PWMConfigAFSEL_ArrPtrStruct     
+0000037f  GPIO_SetData                         
+000002f3  GPIO_SetPinStatus                    
+000007ad  GPIO_TimerPWMInitialization          
+0000040b  GPIO_TogglePinValue                  
+000009e7  GPTM_GeneratePWM                     
+000008d5  GPTM_InitializePWM                   
+20000230  GPTM_PWMConfig_32BitTimer0A          
+20000234  GPTM_PWMConfig_32BitTimer0B          
+20000238  GPTM_PWMConfig_32BitTimer1A          
+2000023c  GPTM_PWMConfig_32BitTimer1B          
+20000240  GPTM_PWMConfig_32BitTimer2A          
+20000244  GPTM_PWMConfig_32BitTimer2B          
+20000218  GPTM_PWMConfig_ArrPtrStruct          
+00000c45  InitializeAllMotors                  
+00001173  PWM_32_64BitTimer0A                  
+00001176  PWM_32_64BitTimer0B                  
+00001179  PWM_32_64BitTimer1A                  
+0000117c  PWM_32_64BitTimer1B                  
+0000117f  PWM_32_64BitTimer2A                  
+00001182  PWM_32_64BitTimer2B                  
+00001185  PWM_32_64BitTimer3A                  
+00001188  PWM_32_64BitTimer3B                  
+0000118b  PWM_32_64BitTimer4A                  
+0000118e  PWM_32_64BitTimer4B                  
+00001191  PWM_32_64BitTimer5A                  
+00001194  PWM_32_64BitTimer5B                  
+000007e5  RegisterCallbackFunction             
+00000f0f  ResetISR                             
+00000b8d  SC_GetOscillatorValue                
+00000bbd  SC_GetSystemClock                    
+00000a9d  SC_Initialization                    
+00001164  SC_SYSDIV                            
+20000200  __STACK_END                          
+00000200  __STACK_SIZE                         
+20000200  __STACK_TOP                          
+000011d0  __TI_CINIT_Base                      
+000011d8  __TI_CINIT_Limit                     
+000011c8  __TI_Handler_Table_Base              
+000011d0  __TI_Handler_Table_Limit             
+00000e7d  __TI_auto_init_nobinit_nopinit       
+00000e13  __TI_decompress_lzss                 
+00000ef5  __TI_decompress_none                 
+ffffffff  __TI_pprof_out_hndl                  
+ffffffff  __TI_prof_data_size                  
+ffffffff  __TI_prof_data_start                 
+00000000  __TI_static_base__                   
+00000e7b  __aeabi_idiv0                        
+00000e7b  __aeabi_ldiv0                        
+00000ce1  __aeabi_memcpy                       
+00000ce1  __aeabi_memcpy4                      
+00000ce1  __aeabi_memcpy8                      
+00000d7d  __aeabi_uldivmod                     
+ffffffff  __binit__                            
+ffffffff  __c_args__                           
+UNDEFED   __mpu_init                           
+20000000  __stack                              
+20000000  __start___llvm_prf_cnts              
+20000000  __stop___llvm_prf_cnts               
+00000ec1  _c_int00_noargs                      
+UNDEFED   _system_post_cinit                   
+00000f1b  _system_pre_init                     
+00000f1f  abort                                
+ffffffff  binit                                
+00000000  g_pfnVectors                         
+00000f03  main                                 
+00000ce1  memcpy                               
+
+
+GLOBAL SYMBOLS: SORTED BY Symbol Address 
+
+address   name                                 
+-------   ----                                 
+00000000  __TI_static_base__                   
+00000000  g_pfnVectors                         
+00000200  __STACK_SIZE                         
+00000293  EXTIAIntHandler                      
+000002a3  EXTIBIntHandler                      
+000002b3  EXTICIntHandler                      
+000002c3  EXTIDIntHandler                      
+000002d3  EXTIEIntHandler                      
+000002e3  EXTIFIntHandler                      
+000002f3  GPIO_SetPinStatus                    
+0000037f  GPIO_SetData                         
+0000040b  GPIO_TogglePinValue                  
+0000044d  GPIO_ConfigureAlternateFunctionSelect
+000004d9  GPIO_ConfigureAnalogModeSelect       
+00000569  GPIO_ConfigurePortControl            
+000005cd  GPIO_ConfigureDigitalEnable          
+0000065d  GPIO_ConfigureCommit                 
+000006d9  GPIO_EXTIClearInterrupt              
+0000071b  GPIO_ConfigureInterruptMask          
+000007ad  GPIO_TimerPWMInitialization          
+000007e5  RegisterCallbackFunction             
+000008d5  GPTM_InitializePWM                   
+000009e7  GPTM_GeneratePWM                     
+00000a9d  SC_Initialization                    
+00000b8d  SC_GetOscillatorValue                
+00000bbd  SC_GetSystemClock                    
+00000c45  InitializeAllMotors                  
+00000c87  CloseHand                            
+00000ce1  __aeabi_memcpy                       
+00000ce1  __aeabi_memcpy4                      
+00000ce1  __aeabi_memcpy8                      
+00000ce1  memcpy                               
+00000d7d  __aeabi_uldivmod                     
+00000e13  __TI_decompress_lzss                 
+00000e7b  __aeabi_idiv0                        
+00000e7b  __aeabi_ldiv0                        
+00000e7d  __TI_auto_init_nobinit_nopinit       
+00000ec1  _c_int00_noargs                      
+00000ef5  __TI_decompress_none                 
+00000f03  main                                 
+00000f0f  ResetISR                             
+00000f1b  _system_pre_init                     
+00000f1f  C$$EXIT                              
+00000f1f  abort                                
+00000f84  GPIO_PWMConfigAFSEL_ArrPtrStruct     
+00001164  SC_SYSDIV                            
+00001173  PWM_32_64BitTimer0A                  
+00001176  PWM_32_64BitTimer0B                  
+00001179  PWM_32_64BitTimer1A                  
+0000117c  PWM_32_64BitTimer1B                  
+0000117f  PWM_32_64BitTimer2A                  
+00001182  PWM_32_64BitTimer2B                  
+00001185  PWM_32_64BitTimer3A                  
+00001188  PWM_32_64BitTimer3B                  
+0000118b  PWM_32_64BitTimer4A                  
+0000118e  PWM_32_64BitTimer4B                  
+00001191  PWM_32_64BitTimer5A                  
+00001194  PWM_32_64BitTimer5B                  
+000011c8  __TI_Handler_Table_Base              
+000011d0  __TI_CINIT_Base                      
+000011d0  __TI_Handler_Table_Limit             
+000011d8  __TI_CINIT_Limit                     
+20000000  __stack                              
+20000000  __start___llvm_prf_cnts              
+20000000  __stop___llvm_prf_cnts               
+20000200  __STACK_END                          
+20000200  __STACK_TOP                          
+20000218  GPTM_PWMConfig_ArrPtrStruct          
+20000230  GPTM_PWMConfig_32BitTimer0A          
+20000234  GPTM_PWMConfig_32BitTimer0B          
+20000238  GPTM_PWMConfig_32BitTimer1A          
+2000023c  GPTM_PWMConfig_32BitTimer1B          
+20000240  GPTM_PWMConfig_32BitTimer2A          
+20000244  GPTM_PWMConfig_32BitTimer2B          
+ffffffff  __TI_pprof_out_hndl                  
+ffffffff  __TI_prof_data_size                  
+ffffffff  __TI_prof_data_start                 
+ffffffff  __binit__                            
+ffffffff  __c_args__                           
+ffffffff  binit                                
+UNDEFED   __mpu_init                           
+UNDEFED   _system_post_cinit                   
+
+[82 symbols]
