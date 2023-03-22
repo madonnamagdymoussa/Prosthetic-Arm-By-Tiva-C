@@ -1,7 +1,6 @@
 /* =====================================================================================*/
 /*                                  INCLUDES                                            */
 /* =====================================================================================*/
-
 #include "GPTM_reg.h"
 #include"lstd.h"
 #include "GPTM_config.h"
@@ -199,10 +198,12 @@ static inline void GPTM_EnableClkTimer(GPTM_ChannelIndexArr_t GPTM_ChannelIndexA
 
     if( _16_32BitTimer_IndiOrConcat == TimerSizeIndexArr){
     SC_RCGCTIMER_Reg |=(1<<GPTM_ChannelIndexArr_t);
+    while( (SC_RCGCTIMER_Reg & (1<<GPTM_ChannelIndexArr_t) ) == 0);
     }
 
     else if( _32_64BitTimer_IndiOrConcat == TimerSizeIndexArr){
         SC_RCGCWTIMER_Reg |=(1<<GPTM_ChannelIndexArr_t);
+        while( (SC_RCGCWTIMER_Reg & (1<<GPTM_ChannelIndexArr_t) ) == 0);
     }
 }
 
@@ -221,15 +222,16 @@ void static inline GPTM_DisableTimer(GPTM_ConfigureTimerName_t ConfigureTimerNam
 
 
 /* =====================================================================================*/
-/*                                  INTERFACE FUNCTION                              */
+/*                                  INTERFACE FUNCTION                                  */
 /* =====================================================================================*/
 
-void GPTM_InitializePWM(GPTM_PWMConfigurationChannel_t* ptr_PWMConfigChannel, GPIO_TimerPWMConfigChannel_t* pt_PWMConfigAFSEL){
-
-    GPIO_TimerPWMInitialization(pt_PWMConfigAFSEL);
+void GPTM_InitializePWM(GPTM_ConfigurationChannel_t* ptr_PWMConfigChannel, GPIO_TimerConfigChannel_t* pt_PWMConfigAFSEL){
 
     GPTM_EnableClkTimer(ptr_PWMConfigChannel->ChannelIndexArr, ptr_PWMConfigChannel->TimerSizeIndexArr);
-   /****************************** STEP1 ******************************/
+
+    GPIO_EnableAFSEL_GPTM(pt_PWMConfigAFSEL);
+
+    /****************************** STEP1 ******************************/
     /*Disable the timer*/
     GPTM_DisableTimer(ptr_PWMConfigChannel->ConfigureTimerName, ptr_PWMConfigChannel->ChannelIndexArr , ptr_PWMConfigChannel->TimerSizeIndexArr);
 
@@ -247,20 +249,29 @@ void GPTM_InitializePWM(GPTM_PWMConfigurationChannel_t* ptr_PWMConfigChannel, GP
 
 }
 
-void GPTM_GeneratePWM(GPTM_PWMConfigurationChannel_t* ptr_PWMConfigChannel, u32_t PWMFrequency,u8_t DutyCycle){
+void GPTM_GeneratePWM(GPTM_ConfigurationChannel_t* ptr_PWMConfigChannel, u32_t PWMFrequency,u8_t DutyCycle){
 
- //GPTM_PWM_Disable(ptr_PWMConfigChannel);
+ GPTM_DisableTimer(ptr_PWMConfigChannel->ConfigureTimerName, ptr_PWMConfigChannel->ChannelIndexArr , ptr_PWMConfigChannel->TimerSizeIndexArr);
 
  u64_t SystemClkFreq;
  u32_t TotalTickNum;
  u32_t TimerOnTickNum;
 
+/*************************** CALCULATING THE NUMBER OF TICKS ***************************
+ *
+ * First: we need to know the frequency of the system by using the SC_GetSystemClock()
+ * function we trace the value of the system clock peripheral registers to get the system frequency
+ *
+ * Second: system clock frequency/the pwm frequency
+ *
+ * */
  SystemClkFreq = SC_GetSystemClock();
  TotalTickNum   =  (SystemClkFreq/PWMFrequency);
  TimerOnTickNum = ( (DutyCycle*TotalTickNum)/100 );
 
  if( TimerA == ptr_PWMConfigChannel->ConfigureTimerName){
 
+     /*Casting the void pointer before usage */
     *( (u32_t*)GPTM_32_64_BitTimerA_IntervalLoad[ptr_PWMConfigChannel->ChannelIndexArr])=TotalTickNum;
     *( (u32_t *)GPTM_32_64_BitTimerA_Match[ptr_PWMConfigChannel->ChannelIndexArr])=TimerOnTickNum;
  }
@@ -271,5 +282,37 @@ void GPTM_GeneratePWM(GPTM_PWMConfigurationChannel_t* ptr_PWMConfigChannel, u32_
  }
 
  GPTM_EnableTimer(ptr_PWMConfigChannel->ConfigureTimerName, ptr_PWMConfigChannel->ChannelIndexArr , ptr_PWMConfigChannel->TimerSizeIndexArr);
+}
+
+
+void GPTM_InitializeDelayMode(GPIO_TimerConfigChannel_t * pt_GPIOTimerConfigChannel, GPTM_ConfigurationChannel_t* pt_TimerConfigChannel){
+
+    GPTM_EnableClkTimer(pt_TimerConfigChannel->ChannelIndexArr, pt_TimerConfigChannel->TimerSizeIndexArr);
+
+    GPIO_EnableAFSEL_GPTM(pt_GPIOTimerConfigChannel);
+
+    GPTM_DisableTimer(pt_TimerConfigChannel->ConfigureTimerName, pt_TimerConfigChannel->ChannelIndexArr , pt_TimerConfigChannel->TimerSizeIndexArr);
+
+    (*GPTM_TimerMode[pt_TimerConfigChannel->TimerSizeNameIndexArr][pt_TimerConfigChannel->ChannelIndexArr]).bits.TimerMode =PeriodicMode;
+
+    /*count down direction*/
+    (*GPTM_TimerMode[pt_TimerConfigChannel->TimerSizeNameIndexArr][pt_TimerConfigChannel->ChannelIndexArr]).bits.TimerCountDirection=0;
+
+    (*GPTM_ConfigurationRegisters[pt_TimerConfigChannel->TimerSizeIndexArr][pt_TimerConfigChannel->ChannelIndexArr]).bits.Configuration = _16_32BitTimer_Individ;
+
+    *((u16_t *)GPTM_16_32_BitTimerA_IntervalLoad[pt_TimerConfigChannel->ChannelIndexArr])=16;
+}
+
+void GPTM_GenerateDelayMicro(GPTM_ConfigurationChannel_t* pt_TimerConfigChannel, u32_t TimeMicroSec){
+
+    GPTM_EnableTimer(pt_TimerConfigChannel->ConfigureTimerName, pt_TimerConfigChannel->ChannelIndexArr , pt_TimerConfigChannel->TimerSizeIndexArr);
+
+    /*
+    int indexCounter;
+
+    for(indexCounter=0; indexCounter=<TimeMicroSec; indexCounter++){
+
+    }
+    */
 }
 

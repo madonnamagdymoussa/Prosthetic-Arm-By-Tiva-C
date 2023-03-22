@@ -4,22 +4,28 @@
 #include "SystemControl.h"
 #include "GPTM.h"
 #include "ServoMotor.h"
+#include "EMG_Sensor.h"
 
 int main()
 {
 
+ //   u32_t EMG_DataSamplesArr1[8];
+//    u32_t EMG_DataSamplesArr2[8];
     InitializeAllMotors();
 
-    for(; ;){
+   // EMGsensor_Initialize();
 
-        CloseHand();
 
-        //GPTM_GeneratePWM(GPTM_PWMConfig_ArrPtrStruct[0], Frequency_50Hz ,DutyCycle_180DegRotation);
 
-        //DutyCycle_0DegRotation
-        //GPTM_GeneratePWM(GPTM_PWMConfig_ArrPtrStruct[0], Frequency_50Hz ,DutyCycle_0DegRotation);
+for(; ;){
 
-    }
+    CloseHand();
+    //OpenHand();
+
+    //EMGsensor_ReadData(EMG_DataSamplesArr1);
+    //EMGsensor_ReadData(EMG_DataSamplesArr2);
+
+}
 
 
 }

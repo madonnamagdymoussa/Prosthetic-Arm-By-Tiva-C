@@ -85,6 +85,28 @@ typedef union {
 
 }GPTMTMR_Reg;
 
+typedef union {
+
+    struct{
+
+        u32_t TATORIS:1;
+        u32_t CAMRIS:1;
+        u32_t CAERIS:1;
+        u32_t RTCRIS:1;
+        u32_t TAMRIS:1;
+        u32_t :3;
+        u32_t TBTORIS:1;
+        u32_t CBMRIS:1;
+        u32_t CBERIS:1;
+        u32_t TBMRIS:1;
+        u32_t :4;
+        u32_t WUERIS:1;
+        u32_t :15;
+    }bits;
+
+    u32_t Register;
+}GPTMRIS_t;
+
 /***************************************** IntervalLoadA 64bit or 16bit **************************************************************/
 #define GPTM_16_32BitTimer0AIntervalLoad    ( (volatile void*) (GPTM_32BitTimer0BaseAdd + GPTMTAILR_Offset)  )
 #define GPTM_16_32BitTimer1AIntervalLoad    ( (volatile void*) (GPTM_32BitTimer1BaseAdd + GPTMTAILR_Offset)  )
@@ -205,6 +227,9 @@ typedef union {
 #define GPTM_32_64BitTimer3BMatch   ((volatile u32_t*)(GPTM_64BitTimer3BaseAdd + GPTMTBMATCHR_Offset))
 #define GPTM_32_64BitTimer4BMatch   ((volatile u32_t*)(GPTM_64BitTimer4BaseAdd + GPTMTBMATCHR_Offset))
 #define GPTM_32_64BitTimer5BMatch   ((volatile u32_t*)(GPTM_64BitTimer5BaseAdd + GPTMTBMATCHR_Offset))
+
+//GPTMRIS_t
+
 
 #define SC_RCGCWTIMER_Reg           *((volatile u32_t*)(0x400FE000 + 0x65C))
 #define SC_RCGCTIMER_Reg            *((volatile u32_t*)(0x400FE000 +  0x604))

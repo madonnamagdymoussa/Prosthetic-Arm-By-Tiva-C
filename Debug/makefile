@@ -4,16 +4,24 @@
 
 SHELL = cmd.exe
 
-CG_TOOL_ROOT := D:/code composer/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS
+CG_TOOL_ROOT := D:/CodeComposer/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS
 
 GEN_OPTS__FLAG := 
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./ADC.obj" \
+"./ADC_config.obj" \
+"./DMA.obj" \
+"./DMA_config.obj" \
+"./EMG_Sensor.obj" \
 "./GPIO.obj" \
 "./GPIO_config.obj" \
 "./GPTM.obj" \
 "./GPTM_config.obj" \
+"./NVIC.obj" \
+"./PWM.obj" \
+"./PWM_config.obj" \
 "./ServoMotor.obj" \
 "./SystemControl.obj" \
 "./SystemControl_Config.obj" \
@@ -133,12 +141,6 @@ ProstheticArm.out \
 EXE_OUTPUTS__QUOTED += \
 "ProstheticArm.out" \
 
-BIN_OUTPUTS += \
-ProstheticArm.hex \
-
-BIN_OUTPUTS__QUOTED += \
-"ProstheticArm.hex" \
-
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
@@ -148,22 +150,15 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 ProstheticArm.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: Arm Linker'
-	"D:/code composer/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"ProstheticArm.map" --heap_size=0 --stack_size=512 -i"D:/code composer/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/lib" -i"D:/code composer/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="ProstheticArm_linkInfo.xml" --rom_model -o "ProstheticArm.out" $(ORDERED_OBJS)
+	"D:/CodeComposer/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/bin/armcl" -mv7M4 --code_state=16 --float_support=FPv4SPD16 -me --define=ccs="ccs" --define=PART_TM4C123GH6PM -g --gcc --diag_warning=225 --diag_wrap=off --display_error_number --abi=eabi -z -m"ProstheticArm.map" --heap_size=0 --stack_size=512 -i"D:/CodeComposer/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/lib" -i"D:/CodeComposer/ccs/tools/compiler/ti-cgt-arm_20.2.7.LTS/include" --reread_libs --diag_wrap=off --display_error_number --warn_sections --xml_link_info="ProstheticArm_linkInfo.xml" --rom_model -o "ProstheticArm.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
-	@echo ' '
-
-ProstheticArm.hex: $(EXE_OUTPUTS)
-	@echo 'Building secondary target: "$@"'
-	@echo 'Invoking: Arm Hex Utility'
-	"D:/code composer/ccs/tools/compiler/ti-cgt-arm_20.2.5.LTS/bin/armhex" --diag_wrap=off -o "ProstheticArm.hex" $(EXE_OUTPUTS__QUOTED)
-	@echo 'Finished building secondary target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "GPIO.obj" "GPIO_config.obj" "GPTM.obj" "GPTM_config.obj" "ServoMotor.obj" "SystemControl.obj" "SystemControl_Config.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" 
-	-$(RM) "GPIO.d" "GPIO_config.d" "GPTM_config.d" "ServoMotor.d" "SystemControl.d" "SystemControl_Config.d" "main.d" "tm4c123gh6pm_startup_ccs.d" 
+	-$(RM) $(EXE_OUTPUTS__QUOTED)
+	-$(RM) "ADC.obj" "ADC_config.obj" "DMA.obj" "DMA_config.obj" "EMG_Sensor.obj" "GPIO.obj" "GPIO_config.obj" "GPTM.obj" "GPTM_config.obj" "NVIC.obj" "PWM.obj" "PWM_config.obj" "ServoMotor.obj" "SystemControl.obj" "SystemControl_Config.obj" "main.obj" "tm4c123gh6pm_startup_ccs.obj" 
+	-$(RM) "ADC.d" "ADC_config.d" "DMA.d" "DMA_config.d" "EMG_Sensor.d" "GPIO.d" "GPIO_config.d" "GPTM_config.d" "NVIC.d" "PWM.d" "PWM_config.d" "ServoMotor.d" "SystemControl.d" "SystemControl_Config.d" "main.d" "tm4c123gh6pm_startup_ccs.d" 
 	-$(RM) "GPTM.d" 
 	-@echo 'Finished clean'
 	-@echo ' '

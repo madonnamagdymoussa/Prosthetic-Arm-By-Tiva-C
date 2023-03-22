@@ -155,14 +155,11 @@ typedef enum{
 #define PWM_32_64BitTimer5B_IndexArr (11)
 /******************************END OF MACRO*******************************/
 
-/* =====================================================================================*/
-/*                                    STRUCT                                             */
-/* =====================================================================================*/
 typedef struct{
     GPIO_PortNumIndexArr_t PortNumIndexArr;
     GPIO_ConfigureChannelNum_t ConfigureChannelNum;
     u8_t PWM_Timer_IndexArr;
-}const GPIO_TimerPWMConfigChannel_t;
+}const GPIO_TimerConfigChannel_t;
 
 /* =================================================*/
 /*NOTE: Due to padding it PREFERABLE to place the struct member with type u8_t
@@ -173,9 +170,26 @@ typedef struct{
  * */
 /* =================================================*/
 
+typedef struct{
+    GPIO_PortNumIndexArr_t PortNumIndexArr;
+    GPIO_ConfigureChannelNum_t ConfigureChannelNum;
+
+}const GPIO_PWMConfigChannel_t; //PWM Module
+
+
+typedef struct{
+
+    GPIO_PortNumIndexArr_t PortNumIndexArr;
+    GPIO_ConfigureChannelNum_t ConfigureChannelNum;
+
+}const GPIO_AdcConfigChannel_t;
+
 /******************************END OF STRUCT*******************************/
 
-extern GPIO_TimerPWMConfigChannel_t * const GPIO_PWMConfigAFSEL_ArrPtrStruct[12];
+extern GPIO_TimerConfigChannel_t * const GPIO_TimerAFSELConfig_ArrPtrStruct[12];
+extern GPIO_PWMConfigChannel_t * const GPIO_PWMConfigAFSEL_ArrPtrStruct[8];
+extern GPIO_AdcConfigChannel_t* const GPIO_AdcConfigAFSEL_ArrPtrStruct[11];
+
 
 
 #endif /* GPIO_CONFIG_H_ */

@@ -26,7 +26,14 @@ void GPIO_ConfigureInterruptMask(GPIO_PortNumIndexArr_t PortNumIndexArr, GPIO_Co
 
 void GPIO_EXTIClearInterrupt(GPIO_PortNumIndexArr_t PortNumIndexArr, GPIO_ConfigureChannelNum_t ConfigureChannelNum);
 
-void GPIO_TimerPWMInitialization(GPIO_TimerPWMConfigChannel_t * TimerPWMConfigChannel);
+
+/*==============================Alternative Function Select==============================*/
+void GPIO_EnableAFSEL_GPTM(GPIO_TimerConfigChannel_t * pt_TimerConfigChannel);
+
+void GPIO_EnableAFSEL_PWM(GPIO_PWMConfigChannel_t * pt_PWMConfigChannel);
+
+void GPIO_EnableAFSEL_ADC(GPIO_AdcConfigChannel_t* pt_AdcConfigChannel);
+
 
 void RegisterCallbackFunction(GPIO_PortNumIndexArr_t PortNumIndexArr,CallbackFunc_t pt_callback);
 

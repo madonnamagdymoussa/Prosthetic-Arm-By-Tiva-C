@@ -1,6 +1,8 @@
 
 #include "ServoMotor.h"
 #include"lstd.h"
+#include "PWM.h"
+
 
 void InitializeAllMotors(void){
 
@@ -8,30 +10,56 @@ void InitializeAllMotors(void){
 
     for( motorNum =0;  motorNum<Fingers; motorNum++){
 
-    GPTM_InitializePWM(GPTM_PWMConfig_ArrPtrStruct[motorNum], GPIO_PWMConfigAFSEL_ArrPtrStruct[motorNum]);
+    //GPTM_InitializePWM(GPTM_PWMConfig_ArrPtrStruct[motorNum], GPIO_GPTMConfigAFSEL_ArrPtrStruct[motorNum]);
+    PWM_Initialization(GPIO_PWMConfigAFSEL_ArrPtrStruct[motorNum]);
 
     }
 }
 
 void CloseHand(void){
 
-    GPTM_GeneratePWM(GPTM_PWMConfig_ArrPtrStruct[Thumb], Frequency_50Hz,DutyCycle_180DegRotation);
-    GPTM_GeneratePWM(GPTM_PWMConfig_ArrPtrStruct[Index], Frequency_50Hz,DutyCycle_180DegRotation);
-    GPTM_GeneratePWM(GPTM_PWMConfig_ArrPtrStruct[Middle], Frequency_50Hz,DutyCycle_180DegRotation);
-    GPTM_GeneratePWM(GPTM_PWMConfig_ArrPtrStruct[Ring], Frequency_50Hz,DutyCycle_180DegRotation);
-    GPTM_GeneratePWM(GPTM_PWMConfig_ArrPtrStruct[Pinky], Frequency_50Hz,DutyCycle_180DegRotation);
+    int motorNum;
+
+    for( motorNum =0;  motorNum<Fingers; motorNum++){
+    PWM_GeneratePWMSignals(PWM_ConfigChannel_ArrPtrStruct[motorNum], DutyCycle_180DegRotation,Frequency_50Hz);
+    }
+    Delay_ms(250);
+
+
+    for( motorNum =0;  motorNum<Fingers; motorNum++){
+    PWM_GeneratePWMSignals(PWM_ConfigChannel_ArrPtrStruct[motorNum], DutyCycle_90DegRotation,Frequency_50Hz);
+    }
+    Delay_ms(230);
+
+
+    for( motorNum =0;  motorNum<Fingers; motorNum++){
+    PWM_GeneratePWMSignals(PWM_ConfigChannel_ArrPtrStruct[motorNum], DutyCycle_0DegRotation,Frequency_50Hz);
+    }
+    Delay_ms(230);
+
+
+    for( motorNum =0;  motorNum<Fingers; motorNum++){
+    PWM_GeneratePWMSignals(PWM_ConfigChannel_ArrPtrStruct[motorNum], DutyCycle_90DegRotation,Frequency_50Hz);
+    }
+    Delay_ms(250);
+
 
 }
 
-/*
-void OpenHand(){
 
-    GPTM_GeneratePWM(ArrPtrStruct[Thumb], 50,2);
-    GPTM_GeneratePWM(ArrPtrStruct[Index], 50,2);
-    GPTM_GeneratePWM(ArrPtrStruct[Middle], 50,2);
-    GPTM_GeneratePWM(ArrPtrStruct[Ring], 50,2);
-    GPTM_GeneratePWM(ArrPtrStruct[Pinky], 50,2);
+void OpenHand(void){
 
+
+    PWM_GeneratePWMSignals(PWM_ConfigChannel_ArrPtrStruct[Thumb], DutyCycle_90DegRotation,Frequency_50Hz);
+
+ }
+
+
+void Delay_ms(int time_ms)
+{
+    int i, j;
+    for(i = 0 ; i < time_ms; i++)
+        for(j = 0; j < 3180; j++)
+            {}
 }
 
-*/
