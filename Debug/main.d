@@ -8,6 +8,7 @@ main.obj: ../GPTM.h
 main.obj: ../GPTM_config.h
 main.obj: ../GPIO_config.h
 main.obj: ../ServoMotor.h
+main.obj: ../EMG_Sensor.h
 
 ../main.c:
 
@@ -24,4 +25,6 @@ main.obj: ../ServoMotor.h
 ../GPIO_config.h:
 
 ../ServoMotor.h:
+
+../EMG_Sensor.h:
 

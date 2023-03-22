@@ -541,6 +541,8 @@ void static inline GPIO_EnableRunModeClockGateControl(GPIO_PortNumIndexArr_t Por
 
      GPIO_RunModeClockGatingControl->Bits.GPIOPortRunModeClockGatingControl |= (1<<PortNumIndexArr);
 
+     while( (GPIO_RunModeClockGatingControl->Bits.GPIOPortRunModeClockGatingControl & (1<<PortNumIndexArr)) == 0);
+
  }
 
  /*****************************  UNIT ID: 3.3.9 **********************************/
@@ -571,6 +573,9 @@ void static inline GPIO_EnableRunModeClockGateControl(GPIO_PortNumIndexArr_t Por
 
 void GPIO_SetPinStatus(GPIO_PortNumIndexArr_t PortNumIndexArr, GPIO_ConfigureChannelNum_t ConfigureChannelNum, GPIO_PinState_t PinState ){
 
+
+
+
     //assert( (PortNum =>MinNumPort) && (PortNum <= MaxNumPort));
     //assert( (ChannelNum =>MinNumChannel) && (ChannelNum <= MaxNumChannel));
     //assert( (State =>MinNumState) && (State <= MaxNumState));
@@ -590,6 +595,32 @@ void GPIO_SetPinStatus(GPIO_PortNumIndexArr_t PortNumIndexArr, GPIO_ConfigureCha
 
 
 }
+
+/*****************************  UNIT ID: 3.3.9 **********************************/
+/* UNIT ID: 3.3.9
+ *
+ * UNIT NAME : GPIO_SetData
+ *
+ * UNIT LOCATION: .text section
+ *
+ * UNIT DESCRIPTION: This function is responsible for setting a defined status for GPIO pin [OUTPUT - INPUT_FLOAT]
+ *
+ * PRE-CONDITION 1:the port clock of the specified pin must be enabled through the
+ * function with UNIT ID: 3.3.7
+ *
+ * PRE-CONDITION 2: the selected channel within the maximum ChannelNum_t definition
+ * PRE-CONDITION 3: the selected port within the maximum PortNum_t definition
+ * PRE-CONDITION 4: the selected state within the maximum PinState_t definition
+ *
+ * POST-CONDITIONS: the pin with number ChannelNum will be a digital pin
+ * POST-CONDITIONS: the pin status with number ChannelNum will be State
+ *
+ * @input : the number of the port
+ * @input : the number of the pin
+ * @input : the pin state
+ *
+ * @return:void
+ */
 
 void GPIO_SetData(GPIO_PortNumIndexArr_t PortNumIndexArr , GPIO_ConfigureChannelNum_t ConfigureChannelNum, GPIO_OutputValue_t OutputValue){
 
@@ -735,21 +766,43 @@ void GPIO_ConfigureInterruptMask(GPIO_PortNumIndexArr_t PortNumIndexArr, GPIO_Co
 
 }
 
+void GPIO_EnableAFSEL_GPTM(GPIO_TimerConfigChannel_t * pt_TimerConfigChannel){
 
-void GPIO_TimerPWMInitialization(GPIO_TimerPWMConfigChannel_t * TimerPWMConfigChannel){
+    GPIO_EnableRunModeClockGateControl(pt_TimerConfigChannel->PortNumIndexArr);
 
-    GPIO_EnableRunModeClockGateControl(TimerPWMConfigChannel->PortNumIndexArr);
-    GPIO_SetPinStatus(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, Output );
-    GPIO_SetData(TimerPWMConfigChannel->PortNumIndexArr , TimerPWMConfigChannel->ConfigureChannelNum, OutputHigh);
+    //GPIO_SetPinStatus(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, Output );
 
-    GPIO_ConfigureAlternateFunctionSelect(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum , Enable_AFSEL);
-    GPIO_ConfigurePortControl(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, MuxValue_7 );
+    //GPIO_SetData(TimerPWMConfigChannel->PortNumIndexArr , TimerPWMConfigChannel->ConfigureChannelNum, OutputHigh);
+
+    GPIO_ConfigureAlternateFunctionSelect(pt_TimerConfigChannel->PortNumIndexArr, pt_TimerConfigChannel->ConfigureChannelNum , Enable_AFSEL);
+    GPIO_ConfigurePortControl(pt_TimerConfigChannel->PortNumIndexArr, pt_TimerConfigChannel->ConfigureChannelNum, MuxValue_7 );
+    GPIO_ConfigureInterruptMask(pt_TimerConfigChannel->PortNumIndexArr, pt_TimerConfigChannel->ConfigureChannelNum, Disable_InterruptMask);
 
 
-    GPIO_ConfigureDigitalEnable(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, EnableDigitalFunction);
+    GPIO_ConfigureDigitalEnable(pt_TimerConfigChannel->PortNumIndexArr, pt_TimerConfigChannel->ConfigureChannelNum, EnableDigitalFunction);
 
 }
 
+void GPIO_EnableAFSEL_PWM(GPIO_PWMConfigChannel_t * pt_PWMConfigChannel){
+
+    GPIO_EnableRunModeClockGateControl(pt_PWMConfigChannel->PortNumIndexArr);
+    GPIO_ConfigureAlternateFunctionSelect(pt_PWMConfigChannel->PortNumIndexArr, pt_PWMConfigChannel->ConfigureChannelNum , Enable_AFSEL);
+    GPIO_ConfigurePortControl(pt_PWMConfigChannel->PortNumIndexArr, pt_PWMConfigChannel->ConfigureChannelNum, MuxValue_4 );
+    GPIO_ConfigureInterruptMask(pt_PWMConfigChannel->PortNumIndexArr, pt_PWMConfigChannel->ConfigureChannelNum, Disable_InterruptMask);
+
+    GPIO_ConfigureDigitalEnable(pt_PWMConfigChannel->PortNumIndexArr, pt_PWMConfigChannel->ConfigureChannelNum, EnableDigitalFunction);
+
+}
+
+
+void GPIO_EnableAFSEL_ADC(GPIO_AdcConfigChannel_t* pt_AdcConfigChannel){
+
+     GPIO_EnableRunModeClockGateControl(pt_AdcConfigChannel->PortNumIndexArr);
+     GPIO_ConfigureAlternateFunctionSelect(pt_AdcConfigChannel->PortNumIndexArr, pt_AdcConfigChannel->ConfigureChannelNum , Enable_AFSEL);
+     GPIO_ConfigureDigitalEnable(pt_AdcConfigChannel->PortNumIndexArr, pt_AdcConfigChannel->ConfigureChannelNum, DisableDigitalFunction);
+     GPIO_ConfigureAnalogModeSelect(pt_AdcConfigChannel->PortNumIndexArr, pt_AdcConfigChannel->ConfigureChannelNum, Enable_AMSEL);
+
+}
 
 void RegisterCallbackFunction(GPIO_PortNumIndexArr_t PortNumIndexArr,CallbackFunc_t pt_callback){
 
@@ -757,8 +810,24 @@ void RegisterCallbackFunction(GPIO_PortNumIndexArr_t PortNumIndexArr,CallbackFun
 
     /* insert the required callback function in the pointer to function --> EXTI_Callback[PortNum]  */
 
-
 }
 
 
+/*
+void GPIO_TimerPWMInitialization(GPIO_TimerPWMConfigChannel_t * TimerPWMConfigChannel){
+
+    GPIO_EnableRunModeClockGateControl(TimerPWMConfigChannel->PortNumIndexArr);
+
+    GPIO_SetPinStatus(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, Output );
+
+    //GPIO_SetData(TimerPWMConfigChannel->PortNumIndexArr , TimerPWMConfigChannel->ConfigureChannelNum, OutputHigh);
+
+    GPIO_ConfigureAlternateFunctionSelect(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum , Enable_AFSEL);
+    GPIO_ConfigurePortControl(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, MuxValue_7 );
+    GPIO_ConfigureInterruptMask(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, Disable_InterruptMask);
+
+    GPIO_ConfigureDigitalEnable(TimerPWMConfigChannel->PortNumIndexArr, TimerPWMConfigChannel->ConfigureChannelNum, EnableDigitalFunction);
+
+}
+*/
 

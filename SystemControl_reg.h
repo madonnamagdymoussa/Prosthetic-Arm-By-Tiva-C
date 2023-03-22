@@ -139,6 +139,7 @@ typedef union {
 
 /*************************************** RunModeClkConfiguration ******************************************/
 #define SC_RunModeClockPWM_Reg        ((volatile RCGCPWM_Reg*)(SYSTEM_CONTROL_BASE + 0x640))
+#define SC_RunModeClockADC_Reg        ((volatile u32_t*)(SYSTEM_CONTROL_BASE + 0x638))
 
 
 

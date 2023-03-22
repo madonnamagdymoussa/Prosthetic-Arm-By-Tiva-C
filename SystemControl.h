@@ -13,10 +13,11 @@
 
 
 u32_t SC_GetSystemClock(void);
-u32_t SC_GetOscillatorValue(void);
 void SC_Initialization(SystemControlConfig_t* ptConfig);
-//void SC_PWMClkIntialization(SC_PWMConfiguration_t* PWMConfiguration);
 
-//int SC_PWMSetFrequency(u32_t PWMFreq,SC_PWMConfiguration_t * pt_PWMConfiguration);
+void SC_PWMClkIntialization(SC_PWMConfiguration_t* PWMConfiguration);
+u32_t SC_GetPWMFrequency(SC_PWMConfiguration_t * pt_PWMConfiguration);
+
+void SC_ADC_ClkIntialization(SC_ConfigPWMmoduleNum_t  ConfigPWMmoduleNum);
 
 #endif /* SYSTEMCONTROL_H_ */

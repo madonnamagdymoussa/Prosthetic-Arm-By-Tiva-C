@@ -2,7 +2,7 @@
 #define GPTM_CONFIG_H_
 
 #include "lstd.h"
-#include "SystemControl_config.h"
+//#include "SystemControl_config.h"
 #include "GPIO_config.h"
 /*************************** Madonna Naming Convention in config.h file ***************************/
 
@@ -105,6 +105,12 @@ typedef enum{
  }GPTM_ConfigurePWMOutputLevel_t;
  /***********************************/
 
+  typedef enum{
+     milli_Sec,
+     micro_Sec,
+     Sec
+ }GPTM_DelayUnit_t;
+
  /* =====================================================================================*/
  /*                                    STRUCT                                             */
  /* =====================================================================================*/
@@ -113,8 +119,9 @@ typedef enum{
     GPTM_ConfigureTimerName_t ConfigureTimerName;
     GPTM_TimerSizeNameIndexArr_t TimerSizeNameIndexArr;
     GPTM_ChannelIndexArr_t ChannelIndexArr;
- }GPTM_PWMConfigurationChannel_t;
 
- extern GPTM_PWMConfigurationChannel_t*  GPTM_PWMConfig_ArrPtrStruct[6];
+ }GPTM_ConfigurationChannel_t;
+
+ extern GPTM_ConfigurationChannel_t*  GPTM_Config_ArrPtrStruct[12];
 
  #endif /* GPTM_CONFIG_H_ */

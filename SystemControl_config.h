@@ -96,16 +96,27 @@ typedef enum{
     PWM_Div8,
     PWM_Div16,
     PWM_Div32,
-    PWM_Div64
+    PWM_Div64=7
 }SC_ConfigurePWMDiv_t;
 /***********************************/
 
 typedef enum{
  Module0PWM,
  Module1PWM
-}SC_ConfigPWMmoduleUsed_t;
+}SC_ConfigPWMmoduleNum_t;
 /***********************************/
 
+typedef enum{
+	Module0ADC,
+	Module1ADC
+}SC_ConfigADCmoduleNum_t;
+/***********************************/
+
+
+
+/* =====================================================================================*/
+/*                                    STRUCT                                            */
+/* =====================================================================================*/
 
 typedef struct{
     SC_ConfigureOscSource_t ConfigOscSource;
@@ -116,17 +127,20 @@ typedef struct{
 
 }SystemControlConfig_t;
 
-/*
+
 typedef struct{
 
     SC_ConfigurePWMDiv_t ConfigurePWMDiv;
     SC_ConfigurePWMDivMode_t ConfigurePWMDivMode;
-    SC_ConfigPWMmoduleUsed_t ConfigPWMmoduleUsed;
-}SC_PWMConfiguration_t;
-*/
-/************************************** Creating instances of typedef Structure *****************************************************************************************/
-extern SystemControlConfig_t config1;
+    SC_ConfigPWMmoduleNum_t ConfigPWMmoduleUsed;
 
+}SC_PWMConfiguration_t;
+
+
+/************************************** Creating instances of typedef Structure *****************************************************************************************/
+extern SystemControlConfig_t ConfigSystemSrc_PLL;
+extern SystemControlConfig_t ConfigSystemSrc_PrecisionInternalOSC;
+extern SC_PWMConfiguration_t PWM_Module0;
 
 
 

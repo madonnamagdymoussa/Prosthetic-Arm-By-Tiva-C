@@ -41,19 +41,22 @@
 u8_t const SC_SYSDIV[15] ={1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 u8_t const SC_PWMDIV[8]  ={2,4,8,16,32,64,64,64};
 
-
-/*
 static inline SC_EnableRunModeClockPWM(SC_PWMConfiguration_t* pt_PWMConfiguration ){
 
-    (SC_RunModeClockPWM_Reg).Register |=(1<< (pt_PWMConfiguration->ConfigPWMmoduleUsed) );
+    (SC_RunModeClockPWM_Reg)->Register |=(1<< (pt_PWMConfiguration->ConfigPWMmoduleUsed) );
+
 }
 
 static inline SC_DisableRunModeClockPWM(SC_PWMConfiguration_t* pt_PWMConfiguration){
 
-    (SC_RunModeClockPWM_Reg).Register &=~(1<< (pt_PWMConfiguration->ConfigPWMmoduleUsed));
+    (SC_RunModeClockPWM_Reg)->Register &=~(1<< (pt_PWMConfiguration->ConfigPWMmoduleUsed));
+}
+
+/*
+static inline SC_EnableRunModeClockADC(SC_ConfigADCmoduleUsed_t ConfigADCmoduleUsed){
+	(*SC_RunModeClockADC_Reg) |= (1<<ConfigADCmoduleUsed);
 }
 */
-
 /**************** Unit ID = 1.3.1 **********************************/
 /* UNIT ID = 1.3.1
  * UNIT NAME: SystemControlInitialization_RCC
@@ -169,7 +172,7 @@ void SC_Initialization(SystemControlConfig_t* ptConfig){
  *       instead it will called inside SC_GetSystemClock_RCC function
  */
 
-u32_t  SC_GetOscillatorValue(void){
+u32_t static SC_GetOscillatorValue(void){
 
     switch(SC_RunModeClockConfiguration->bits.OscillatorSource){
 
@@ -259,7 +262,6 @@ u32_t SC_GetSystemClock(void){
 }
 
 
-/*
 void SC_PWMClkIntialization(SC_PWMConfiguration_t* PWMConfiguration){
 
     SC_EnableRunModeClockPWM(PWMConfiguration);
@@ -268,32 +270,34 @@ void SC_PWMClkIntialization(SC_PWMConfiguration_t* PWMConfiguration){
 
     if ( EnablePWMClkDiv == PWMConfiguration->ConfigurePWMDivMode){
 
-    SC_RunModeClockConfiguration->bits.EnableSystemClockDivider = PWMConfiguration->ConfigurePWMDiv;
+    SC_RunModeClockConfiguration->bits.PWMUnitClockDivisor = PWMConfiguration->ConfigurePWMDiv;
 
     }
 }
-*/
 
 
-/*
 
-int SC_PWMSetFrequency(u32_t PWMFreq,SC_PWMConfiguration_t * pt_PWMConfiguration){
+u32_t SC_GetPWMFrequency(SC_PWMConfiguration_t * pt_PWMConfiguration){
 
-   u32_t SystemClkValue = SC_GetSystemClock();
+    u32_t PWMFreq;
+    u32_t SysClkFreq;
 
-   if ( 1 == SC_RunModeClockConfiguration->bits.EnableSystemClockDivider){
+   SysClkFreq = SC_GetSystemClock();
 
-       SystemClkValue = SystemClkValue/SC_PWMDIV[pt_PWMConfiguration->ConfigurePWMDivValue];
+  // if ( 1 == SC_RunModeClockConfiguration->bits.EnableSystemClockDivider){
+
+   if ( 1 == pt_PWMConfiguration->ConfigurePWMDivMode){
+
+       PWMFreq = SysClkFreq/SC_PWMDIV[SC_RunModeClockConfiguration->bits.PWMUnitClockDivisor];
+       return PWMFreq;
    }
 
-   f64_t PWM_TickTime = (1/SystemClkValue);
-
-   f64_t PWM_CycleTime = (1/PWMFreq);
-
-   u32_t TotalNumTicks = (u32_t)(PWM_CycleTime/PWM_TickTime);
-
-   return TotalNumTicks;
+  return SysClkFreq;
 
 }
-*/
 
+
+void SC_ADC_ClkIntialization(SC_ConfigPWMmoduleNum_t  ConfigPWMmoduleNum){
+
+    *SC_RunModeClockADC_Reg  |= (1<< ConfigPWMmoduleNum );
+}
